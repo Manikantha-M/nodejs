@@ -58,3 +58,32 @@ readFile('../files/new-async.txt', 'utf-8', (err, result) => {
     if (err) console.log(err);
     else console.log(result);
 })
+
+
+/* HTTP */
+
+// const http = require('http');
+// const server = http.createServer((req, res) => {
+//     res.write('Welcome to http server');
+//     res.end();
+// });
+
+// server.listen(5000);
+
+const http = require('http');
+const server = http.createServer((req, res) => {
+    if(req.url == '/'){
+       res.end('Welcome to our home page')
+    }
+    else if(req.url == '/about'){
+        res.end('Here is our short history');
+    }
+    else{
+        res.end(`
+    <h1>Oops! Page not found</h1>
+    <a href="/">Back home</a>
+    `);
+    } 
+});
+
+server.listen(5000);
