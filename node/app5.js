@@ -41,26 +41,41 @@ The event loop is what allows Node.js to perform non-blocking I/O operations —
 
 // Async Patterns
 
-const { readFile } = require('fs');
+// const { readFile } = require('fs');
 
-const getText = (path) => {
-    return new Promise((resolve, reject) => {
-        readFile(path, 'utf-8', (err, data) => {
-            if (err) reject(err)
-            else resolve(data);
+// const getText = (path) => {
+//     return new Promise((resolve, reject) => {
+//         readFile(path, 'utf-8', (err, data) => {
+//             if (err) reject(err)
+//             else resolve(data);
 
-        })
-    })
-}
+//         })
+//     })
+// }
 
 // getText('./node/files/first.txt').then(result => console.log(result)).catch(err => console.log(err));
-const readText = async () => {
-    try{
-        const firstText = await getText('./node/files/first.txt');
-        console.log(firstText);
-    }catch(err){
+// const readText = async () => {
+//     try{
+//         const firstText = await getText('./node/files/first.txt');
+//         console.log(firstText);
+//     }catch(err){
+//         console.log(err);
+//     }
+// }
+
+// readText()
+
+const {readFile, writeFile} = require('fs').promises;
+
+const start = async () => {
+    try {
+        const first = await readFile('./node/files/first.txt', 'utf-8');
+        console.log(first);
+        await writeFile('./node/files/fspromise.text', 'Written using fs promises');
+    }
+    catch (err){
         console.log(err);
     }
 }
 
-readText()
+start();
