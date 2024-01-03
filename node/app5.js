@@ -65,13 +65,15 @@ The event loop is what allows Node.js to perform non-blocking I/O operations —
 
 // readText()
 
+// FS Promises
+
 const {readFile, writeFile} = require('fs').promises;
 
 const start = async () => {
     try {
         const first = await readFile('./node/files/first.txt', 'utf-8');
         console.log(first);
-        await writeFile('./node/files/fspromise.text', 'Written using fs promises');
+        await writeFile('./node/files/fspromise.txt', 'Written using fs promises');
     }
     catch (err){
         console.log(err);
