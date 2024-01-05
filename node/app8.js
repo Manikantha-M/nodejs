@@ -9,5 +9,9 @@ A request header is an HTTP header that can be used in an HTTP request to provid
 Response:
 Status text, Status code, Headers, Body
 Response header:
+A response header is an HTTP header that can be used in an HTTP response and that doesn't relate to the content of the message. Response headers, like Age, Location or Server are used to give a more detailed context of the response.
+
+Not all headers appearing in a request/response are categorized as request/response headers by the specification.
+For example, the Content-Type header is a representation header indicating the original type of data in the body of the response message.
 
 */
