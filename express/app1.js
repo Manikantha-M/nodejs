@@ -15,3 +15,15 @@ Not all headers appearing in a request/response are categorized as request/respo
 For example, the Content-Type header is a representation header indicating the original type of data in the body of the response message.
 
 */
+
+
+// HTTP Basics
+
+const http = require('http');
+const server = http.createServer((req, res)=>{
+    res.writeHead(200, {"content-type":"text/html"});
+    console.log('user hit the server');
+    res.write('<h1>Home page</h1>');
+    res.end();
+});
+server.listen(5000)
