@@ -20,11 +20,15 @@ For example, the Content-Type header is a representation header indicating the o
 // HTTP Basics
 
 const http = require('http');
+const {readFileSync} = require('fs');
+// get the html file
+const homePage = readFileSync('./express/index.html');
+
 const server = http.createServer((req, res)=>{
     if(req.url == '/'){
         // headers
         res.writeHead(200, {"content-type":"text/html"});
-        res.write('<h1>Home page</h1>');
+        res.write(homePage);
         res.end();
     }
     else if(req.url == '/about'){
