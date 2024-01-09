@@ -21,7 +21,7 @@ For example, the Content-Type header is a representation header indicating the o
 
 const http = require('http');
 const {readFileSync} = require('fs');
-// get the html file
+// get the files
 const homePage = readFileSync('./express/navbar-app/index.html');
 const styles = readFileSync('./express/navbar-app/styles.css');
 const logo = readFileSync('./express/navbar-app/logo.svg');
