@@ -17,7 +17,7 @@ For example, the Content-Type header is a representation header indicating the o
 */
 
 
-// HTTP Basics
+// HTTP Basics & serve an application using http module
 
 const http = require('http');
 const {readFileSync} = require('fs');
