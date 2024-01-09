@@ -22,7 +22,10 @@ For example, the Content-Type header is a representation header indicating the o
 const http = require('http');
 const {readFileSync} = require('fs');
 // get the html file
-const homePage = readFileSync('./express/index.html');
+const homePage = readFileSync('./express/navbar-app/index.html');
+const styles = readFileSync('./express/navbar-app/styles.css');
+const logo = readFileSync('./express/navbar-app/logo.svg');
+const jsfile = readFileSync('./express/navbar-app/browser-app.js');
 
 const server = http.createServer((req, res)=>{
     if(req.url == '/'){
@@ -31,9 +34,19 @@ const server = http.createServer((req, res)=>{
         res.write(homePage);
         res.end();
     }
-    else if(req.url == '/about'){
-        res.writeHead(200, {"content-type":"text/html"});
-        res.write('<h1>About page</h1>');
+    else if(req.url == '/styles.css'){
+        res.writeHead(200, {"content-type":"text/css"});
+        res.write(styles);
+        res.end();
+    }
+    else if(req.url == '/logo.svg'){
+        res.writeHead(200, {"content-type":"image/svg+xml"});
+        res.write(logo);
+        res.end();
+    }
+    else if(req.url == '/browser-app.js'){
+        res.writeHead(200, {"content-type":"text/javascript"});
+        res.write(jsfile);
         res.end();
     }
    else {
