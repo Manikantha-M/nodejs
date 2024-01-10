@@ -22,10 +22,10 @@ For example, the Content-Type header is a representation header indicating the o
 const http = require('http');
 const {readFileSync} = require('fs');
 // get the files
-const homePage = readFileSync('./express/navbar-app/index.html');
-const styles = readFileSync('./express/navbar-app/styles.css');
-const logo = readFileSync('./express/navbar-app/logo.svg');
-const jsfile = readFileSync('./express/navbar-app/browser-app.js');
+const homePage = readFileSync('./express/htmlfiles/index1.html');
+const styles = readFileSync('./express/staticfiles/styles.css');
+const logo = readFileSync('./express/staticfiles/logo.svg');
+const jsfile = readFileSync('./express/staticfiles/browser-app.js');
 
 const server = http.createServer((req, res)=>{
     if(req.url == '/'){
