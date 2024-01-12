@@ -53,6 +53,15 @@ app.get('/api/products/:id/reviews/:rid', (req, res) => {
     res.send('Hello world')
 })
 
+app.get('/api/query', (req, res)=>{
+    const {search, limit} = req.query;
+    let sortedProducts = [...products];
+    if(search) sortedProducts = sortedProducts.filter(p => p.name.startsWith(search));
+    if(limit) sortedProducts = sortedProducts.slice(0, Number(limit));
+    if(sortedProducts.length == 0) res.status(200).send('No products match');
+    else res.status(200).json(sortedProducts);
+})
+
 app.listen(5000, () => {
     console.log('Server is listening on 5000');
 })
