@@ -1,5 +1,5 @@
 /*
-JSON Basics and Path Parameters and Query Parameters
+JSON Basics, Path Parameters, and Query Parameters
 
 Path Parameters:
 
@@ -22,9 +22,8 @@ Example: /search?query=node&category=programming
 Usage Case: Query parameters are often used for filtering, sorting, or providing additional options to the server. They don't directly identify a resource like path parameters.
 
 app.get('/search', (req, res) => {
-  const query = req.query.query;
-  const category = req.query.category;
-  // Handle the search based on the query and category
+  const query = req.query.category;
+  // Handle the search based on the category
 });
 
 */
