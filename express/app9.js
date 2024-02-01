@@ -26,4 +26,15 @@ app.post('/api/people', (req, res)=>{
     res.status(201).json({success:true, person:req.body.name});
 })
 
+app.put('/api/people/:id', (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    const user = people.find(p => p.id == parseInt(id));
+    if(!user) res.status(200).json({success: false, msg: 'User not found'});
+    else {
+        user.name = name;
+        res.status(200).json({success: true, data: people})
+    }
+})
+
 app.listen(5000)
