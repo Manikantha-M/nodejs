@@ -46,4 +46,14 @@ app.put('/api/people/:id', (req, res) => {
     }
 })
 
+app.delete('/api/people/:id', (req, res)=>{
+    const {id} = req.params;
+    const user = people.find(p => p.id == parseInt(id));
+    if(!user) res.status(200).json({success: false, msg: 'User not found'});
+    else {
+        people.splice(people.findIndex(p => p.id == parseInt(id)), 1);
+        res.status(200).json({success: true, data: people})
+    }
+})
+
 app.listen(5000)
