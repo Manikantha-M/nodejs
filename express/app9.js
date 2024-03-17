@@ -1,4 +1,4 @@
-// HTTP GET and POST
+// HTTP GET, POST, PUT
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -8,8 +8,17 @@ app.use(express.static(path.resolve(__dirname, './staticfiles/http-methods-publi
 
 // Middleware to parse form data
 app.use(express.urlencoded({extended:false}));
+/*
+This is a built-in middleware function in Express. It parses incoming requests with urlencoded payloads and is based on body-parser. The parsed body is attached to the request object.
+*/
+
+
 // Middleware to parse json
 app.use(express.json());
+/*
+This is a built-in middleware function in Express. It parses incoming requests with JSON payloads and is based on body-parser. The parsed body is attached to the request object.
+*/
+
 
 app.get('/api/people', (req, res) => {
     res.status(200).json({success: true, data: people})
