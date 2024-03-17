@@ -32,7 +32,7 @@ app.post('/login', (req, res)=>{
 
 app.post('/api/people', (req, res)=>{
     console.log(req.body)
-    res.status(201).json({success:true, person:req.body.name});
+    res.status(200).json({success:true, person:req.body.name});
 })
 
 app.put('/api/people/:id', (req, res) => {
