@@ -1,10 +1,7 @@
+// Express Router
 const express = require('express');
-// const path = require('path');
 const app = express();
-// let { people } = require('./data');
 const peopleRouter = require('./router/people');
-
-// app.use(express.static(path.resolve(__dirname, './staticfiles/http-methods-public')));
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
