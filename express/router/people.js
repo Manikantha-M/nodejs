@@ -12,4 +12,8 @@ router.put('/:id', putPerson);
 
 router.delete('/:id', deletePerson);
 
+// Chaining
+// router.route('/').get(getPeople).post(postPeople);
+// router.route('/:id').put(putPerson).delete(deletePerson);
+
 module.exports = router;

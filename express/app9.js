@@ -1,4 +1,4 @@
-// HTTP GET, POST, PUT
+// HTTP GET, POST, PUT, DELETE
 const express = require('express');
 const path = require('path');
 const app = express();
