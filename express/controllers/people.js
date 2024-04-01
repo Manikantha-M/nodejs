@@ -1,4 +1,7 @@
-// Controllers
+/*
+Controllers
+Controllers are functions in Express.js that handle incoming requests and responses. They are responsible for processing the request, interacting with the database, and generating the response.
+*/
 
 let {people} = require('../data');
 
