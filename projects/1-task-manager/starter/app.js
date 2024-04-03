@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const taskRouter = require('./router/tasks-router');
+require('./mongoDB/connect')
 
 // middleware
 app.use(express.json());
