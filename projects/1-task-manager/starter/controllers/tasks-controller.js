@@ -45,6 +45,18 @@ const updateTask = async(req, res) => {
     }
 }
 
+const editTask = async(req, res) => {
+    try {
+        const {params:{id}, body} = req;
+        const task = await TaskModel.findOneAndReplace({_id:id}, body, {new:true, runValidators:true});
+        if(!task) return res.status(404).json({msg:'Could not PUT'});
+        res.status(200).json(task);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+}
+
 const deleteTask = async(req, res) => {
     try {
         const id = req.params.id;
@@ -56,4 +68,4 @@ const deleteTask = async(req, res) => {
         res.status(500).json(error);
     }
 }
-module.exports = { getAllTasks, createTask, getTask, updateTask, deleteTask }
+module.exports = { getAllTasks, createTask, getTask, updateTask, deleteTask, editTask }
