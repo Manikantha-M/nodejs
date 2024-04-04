@@ -1,7 +1,13 @@
 const TaskModel = require('../models/task-model');
 
-const getAllTasks = (req, res) => {
-    res.send('get all tasks');
+const getAllTasks = async(req, res) => {
+    try {
+        const tasks = await TaskModel.find({});
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
 }
 
 const createTask = async(req, res) => {
@@ -10,20 +16,44 @@ const createTask = async(req, res) => {
         res.status(201).json(task);
     } catch (error) {
         console.log(error)
-        res.status(500).json({error});
+        res.status(500).json(error);
     }
    
 }
 
-const getTask = (req, res) => {
-    res.json({id:req.params.id});
+const getTask = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const task = await TaskModel.findOne({_id:id});
+        if(!task) return res.status(404).json({msg:'task not found'});
+        res.status(200).json(task);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
 }
 
-const updateTask = (req, res) => {
-    res.json({msg:'to be updated', id:req.params.id});
+const updateTask = async(req, res) => {
+    try {
+        const {params:{id}, body} = req;
+        const task = await TaskModel.findOneAndUpdate({_id:id}, body, {new:true, runValidators:true});
+        if(!task) return res.status(404).json({msg:'Could not update'});
+        res.status(200).json(task);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
 }
 
-const deleteTask = (req, res) => {
-    res.json({msg:'to be deleted', id:req.params.id});
+const deleteTask = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const task = await TaskModel.findOneAndDelete({_id:id});
+        if(!task) return res.status(404).json({msg:'Could not delete'});
+        res.status(200).json(task);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
 }
 module.exports = { getAllTasks, createTask, getTask, updateTask, deleteTask }
