@@ -8,4 +8,4 @@ const connectToDatabase = async(url) => {
     }
 }
 
-module.exports = {connectToDatabase};
+module.exports = connectToDatabase;
