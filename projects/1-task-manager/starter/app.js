@@ -4,17 +4,20 @@ const taskRouter = require('./router/tasks-router');
 const connectDB = require('./mongoDB/connect');
 require('dotenv').config();
 const notFound = require('./middleware/not-found');
+const errorHandler = require('./middleware/error-handler');
+
 // middleware
 app.use(express.json());
 app.use(express.static('./public'));
-
+app.use(notFound);
+app.use(errorHandler);
 // routes
 app.get('/hello', (req, res)=>{
     res.send('Task Manager App');
 })
 
 app.use('/api/v1/tasks', taskRouter)
-app.use(notFound)
+
 
 const port = 3000;
 const startServer = async() => {
