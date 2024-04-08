@@ -1,3 +1,16 @@
+/*
+JWT
+JSON Web Token(JWT) is a way for securely transmitting information between parties as a JSON object.
+Usage of JWT: Authorization, Information Exchange
+JWT structure:
+JWT consist of three parts separated by dots(.), whichh are:
+Header.Payload.Signature
+The output is three Base64-URL strings separated by dots.
+
+*/
+
+
+
 require('dotenv').config();
 require('express-async-errors');
 const mainRouter = require('./routes/main');
