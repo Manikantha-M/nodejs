@@ -7,6 +7,7 @@ JWT consist of three parts separated by dots(.), whichh are:
 Header.Payload.Signature
 The output is three Base64-URL strings separated by dots.
 
+Whenever the user wants to access a protected route or resource, the user agent should send the JWT, typically in the Authorization header using the Bearer schema.
 */
 
 
