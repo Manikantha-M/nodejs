@@ -1,14 +1,13 @@
 const {StatusCodes} = require('http-status-codes');
+const bcrypt = require('bcryptjs');
 const UserModel = require('../models/User')
 const {BadRequestError} = require('../errors');
 
 const register = async (req, res) => {
-    // const {name, email, password} = req.body;
-    // if(!name || !email || !password){
-    //     throw new BadRequestError('Please provide name, email, and password')
-    // }
     const user = await UserModel.create(req.body);
-    res.status(StatusCodes.CREATED).json(user)
+    const token = user.createJWT();
+    res.status(StatusCodes.CREATED).json({token, user:user.getName()});
+    
 }
 const login = async (req, res) => {
     res.send('login user')
