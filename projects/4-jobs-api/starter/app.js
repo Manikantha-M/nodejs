@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('express-async-errors');
+const path = require('path');
 const express = require('express');
 const app = express();
 const authRouter = require('./routes/auth');
@@ -23,6 +24,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 // Connect DB
 const {connectToDatabase} = require('./db/connect');
 app.set('trust proxy', 1);
+app.use(express.static(path.resolve(__dirname, './browser')))
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
@@ -35,18 +37,22 @@ app.use(rateLimit({
 	// store: ... , // Redis, Memcached, etc. See below.
 }));
 
-// Ping Route
-app.get('/', (req, res)=>{
-    res.send(
-    `<h3>Hi Mani, Jobs API is up and runnig.</h3> <a href="/api-docs">Swagger UI</a>`
-);
-});
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobsRouter);
+
+// Ping Route
+// app.get('/', (req, res)=>{
+//     res.send(
+//     `<h3>Hi Mani, Jobs API is up and runnig.</h3> <a href="/api-docs">Swagger UI</a>`
+// );
+// });
+app.get('*', (req, res)=>{
+    res.sendFile(path.resolve(__dirname, './browser', 'index.html'));
+})
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
