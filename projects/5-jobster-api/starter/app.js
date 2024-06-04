@@ -47,7 +47,7 @@ app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 //Ping Route
 app.get('/', (req, res)=>{
     res.send(
-    `<h3>Hi Mani, Jobs API is up and runnig.</h3> <a href="/api-docs">Swagger UI</a>`
+    `<h3>Hi Mani, Jobster API is up and runnig.</h3> <a href="/api-docs">Swagger UI</a>`
     );
 });
 

@@ -5,8 +5,7 @@ const {BadRequestError, UnauthenticatedError} = require('../errors');
 const register = async (req, res) => {
     const user = await UserModel.create(req.body);
     const token = user.createJWT();
-    res.status(StatusCodes.CREATED).json({token, user:user.getName()});
-    
+    res.status(StatusCodes.CREATED).json({token, user:{email:user.email, lastName:user.lastName, location:user.location, name:user.getName()}});
 }
 const login = async (req, res) => {
     const {email, password} = req.body;
@@ -25,7 +24,7 @@ const login = async (req, res) => {
     if(!isPasswordCorrect) throw new UnauthenticatedError('Invalid Credentials');
 
     const token = user.createJWT();
-    res.status(StatusCodes.OK).json({token, user:user.getName()})
+    res.status(StatusCodes.OK).json({token, user:{email:user.email, lastName:user.lastName, location:user.location, name:user.getName()}})
 
 }
 
