@@ -45,10 +45,8 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 
 //Ping Route
-app.get('/', (req, res)=>{
-    res.send(
-    `<h3>Hi Mani, Jobster API is up and runnig.</h3> <a href="/api-docs">Swagger UI</a>`
-    );
+app.get('*', (req, res)=>{
+    res.sendFile(path.resolve(__dirname, './browser'));
 });
 
 app.use(notFoundMiddleware);
