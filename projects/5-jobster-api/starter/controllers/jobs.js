@@ -23,7 +23,6 @@ const createJob = async (req, res) => {
 const updateJob = async (req, res) => {
     const {user:{userId}, params:{id:jobId}, body:{company,position}} = req;
     if(!company || !position) throw new BadRequestError('Company or Position fields cannot be empty');
-
     const job = await JobModel.findOneAndUpdate({_id:jobId, createdBy:userId}, req.body, {new:true, runValidators:true});
     if(!job) throw new NotFoundError(`No Job with id: ${jobId} is found`);
     res.status(StatusCodes.OK).json(job);

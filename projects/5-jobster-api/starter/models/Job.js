@@ -1,5 +1,3 @@
-const { required } = require('joi');
-const { defaultTo } = require('lodash');
 const mongoose = require('mongoose');
 
 const JobSchema = new mongoose.Schema({
