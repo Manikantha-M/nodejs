@@ -3,8 +3,36 @@ const JobModel = require('../models/Job');
 const {BadRequestError, UnauthenticatedError, NotFoundError} = require('../errors');
 
 const getAllJobs = async (req, res) => {
-    const jobs = await JobModel.find({createdBy:req.user.userId}).sort('createdAt');
-    res.status(StatusCodes.OK).json({jobs, count:jobs.length});
+    const {status, jobType, sort, page, search} = req.query;
+    const queryObj = {
+        createdBy: req.user.userId
+    }
+    if(search){
+        queryObj.position = {$regex:search, $options:'i'};
+    }
+    if(status && status !== 'all') {
+        queryObj.status = status;
+    }
+    if(jobType && jobType !== 'all') {
+        queryObj.jobType = jobType;
+    }
+    let result = JobModel.find(queryObj);
+    switch(sort){
+        case 'latest':
+        result = result.sort('-createdAt')
+            break;
+        case 'oldest':
+        result = result.sort('createdAt')
+            break;
+        case 'a-z':
+        result = result.sort('position')
+            break;
+        case 'z-a':
+        result = result.sort('-position')
+            break;
+    }
+    const jobs = await result;
+    res.status(StatusCodes.OK).json({jobs});
 }
 
 const getJob = async (req, res) => {
