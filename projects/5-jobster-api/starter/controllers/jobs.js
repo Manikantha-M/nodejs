@@ -3,7 +3,7 @@ const JobModel = require('../models/Job');
 const {BadRequestError, UnauthenticatedError, NotFoundError} = require('../errors');
 
 const getAllJobs = async (req, res) => {
-    const {status, jobType, sort, page, search} = req.query;
+    const {status, jobType, sort, pageIndex, search, limit} = req.query;
     const queryObj = {
         createdBy: req.user.userId
     }
@@ -30,9 +30,17 @@ const getAllJobs = async (req, res) => {
         case 'z-a':
         result = result.sort('-position')
             break;
-    }
+    };
+    const pageLimit = Number(limit) || 5;
+    const skip = (Number(pageIndex) || 0) * pageLimit;
+
+    result = result.skip(skip).limit(pageLimit);
+
     const jobs = await result;
-    res.status(StatusCodes.OK).json({jobs});
+    // total count of jobs
+    const totalJobs = await JobModel.countDocuments(queryObj);
+
+    res.status(StatusCodes.OK).json({jobs, count:totalJobs});
 }
 
 const getJob = async (req, res) => {
