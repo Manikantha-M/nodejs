@@ -86,6 +86,22 @@ const showStats = async(req, res) => {
         return acc;
     }, {"declined":0, "interview":0, "pending":0});
 
-    res.status(StatusCodes.OK).json({stats, monthlyApplications:[]});
+    let monthlyApplications = await JobModel.aggregate([
+        {$match: {createdBy: mongoose.Types.ObjectId.createFromHexString(req.user.userId)}},
+        {$group: {
+            _id: {year: {$year:'$createdAt'}, month:{$month:'$createdAt'}},
+            count: {$sum:1}
+        }},
+        {$sort:{'_id.year': -1, '_id.month': 1}},
+        {$limit: 6}
+    ]);
+    // moment
+    monthlyApplications = monthlyApplications.map((item)=> {
+        const {_id:{year, month}, count} = item;
+        const date = moment().month(month-1).year(year).format('MMM Y');
+        return {'name': date, 'value': count};
+    });
+
+    res.status(StatusCodes.OK).json({stats, monthlyApplications: monthlyApplications});
 }
 module.exports = {getAllJobs, getJob, createJob, updateJob, deleteJob, showStats}
