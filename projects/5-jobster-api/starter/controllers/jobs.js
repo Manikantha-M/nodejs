@@ -1,3 +1,5 @@
+const moment = require('moment');
+const mongoose = require('mongoose');
 const {StatusCodes} = require('http-status-codes');
 const JobModel = require('../models/Job');
 const {BadRequestError, UnauthenticatedError, NotFoundError} = require('../errors');
@@ -72,5 +74,18 @@ const deleteJob = async (req, res) => {
     res.status(StatusCodes.OK).json({"msg":"Deleted"});
 }
 
+const showStats = async(req, res) => {
+    
+    let stats = await JobModel.aggregate([
+        {$match:{createdBy:mongoose.Types.ObjectId.createFromHexString(req.user.userId)}},
+        {$group:{_id:'$status', count:{$sum: 1}}}
+    ]);
 
-module.exports = {getAllJobs, getJob, createJob, updateJob, deleteJob}
+    stats = stats.reduce((acc, curr) => {
+        acc[curr['_id']] = curr['count'];
+        return acc;
+    }, {"declined":0, "interview":0, "pending":0});
+
+    res.status(StatusCodes.OK).json({stats, monthlyApplications:[]});
+}
+module.exports = {getAllJobs, getJob, createJob, updateJob, deleteJob, showStats}
