@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('express-async-errors');
 const fileUpload = require('express-fileupload');
+const cloudinary = require('cloudinary').v2;
 
 const express = require('express');
 const app = express();
