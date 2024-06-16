@@ -5,7 +5,7 @@ const createProduct = async (req, res) => {
     console.log(req.body)
     const product = await ProductSchema.create(req.body);
 
-    res.status(StatusCodes.CREATED).send('create product/get all products');
+    res.status(StatusCodes.CREATED).send('Product created');
 }
 const getAllProducts = async (req, res) => {
     const products = await ProductSchema.find({});
