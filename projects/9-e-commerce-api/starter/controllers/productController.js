@@ -34,10 +34,11 @@ const updateProduct = async (req, res) => {
 };
 const deleteProduct = async (req, res) => {
     const { id:productId } = req.params;
-    const product = await Product.findOneAndDelete({_id:productId});
+    const product = await Product.findOne({_id:productId});
     if(!product) {
         throw new CustomError.NotFoundError(`No Product with id: ${productId}`);
     };
+    await product.deleteOne();
     res.status(StatusCodes.OK).json({msg:"Success product removed"});
 };
 const uploadImage = async (req, res) => {
@@ -56,6 +57,9 @@ const uploadImage = async (req, res) => {
     await productImage.mv(imagePath);
     res.status(StatusCodes.OK).json({image:`/uploads/${productImage.name}`})
 };
+
+
+
 module.exports = {
     createProduct, getAllProducts, getSingleProduct, updateProduct, deleteProduct, uploadImage
 }
