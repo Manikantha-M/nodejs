@@ -3,3 +3,4 @@ node_modules
 redis
 .env
 automation
+11-auth-workflow
