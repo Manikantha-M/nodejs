@@ -1,10 +1,10 @@
 const UserSchema = require('../model/user-model');
+const TokenSchema = require('../model/token-model');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const {attachCookiesToResponse,createTokenUser} = require('../utils');
-const { options } = require('joi');
 const crypto = require('crypto');
-
+const sendEmail = require('../utils/sendEmal');
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -19,16 +19,31 @@ const register = async (req, res) => {
     const verificationToken = crypto.randomBytes(40).toString('hex');
     const user = await UserSchema.create({ email, name, password, role, verificationToken });
     
-    const tokenUser = createTokenUser(user)
-    attachCookiesToResponse({res, user: tokenUser});
-
+    const tokenUser = createTokenUser(user);
+    // Create Refresh Token
+    let refreshToken = '';
+    refreshToken = crypto.randomBytes(40).toString('hex');
+    const userAgent = req.headers['user-agent'];
+    const ip = req.ip;
+    const userToken = {refreshToken, ip, userAgent, user:user._id};
+    await TokenSchema.create(userToken);
+    // attachCookiesToResponse({res, user: tokenUser});
+    sendEmail("test@example.com", "Please verify your email");
     // res.status(StatusCodes.CREATED).json({ user: tokenUser });
     res.status(StatusCodes.CREATED).json({ msg: 'Success! Please check your email to verifiy account', verificationToken });
 };
 
 const verifyEmail = async (req,res) => {
     const {verificationToken, email} = req.body;
-    res.status(StatusCodes.OK).json({verificationToken, email});
+    const user = await UserSchema.findOne({email});
+    if(!user){
+        throw new CustomError.UnauthenticatedError('Verification Failed');
+    };
+    if(user.verificationToken !== verificationToken){
+        throw new CustomError.UnauthenticatedError('Verification Failed');
+    };
+    await UserSchema.findOneAndUpdate({_id:user._id}, {isVerified:true, verified:Date.now(), verificationToken:''})
+    res.status(StatusCodes.OK).json({msg:'email verified'});
 };
 
 const login = async (req, res) => {
@@ -37,6 +52,7 @@ const login = async (req, res) => {
     };
 
     const user = await UserSchema.findOne({email});
+
     if(!user) {
         throw new CustomError.UnauthenticatedError('Invalid credentials');
     }
@@ -48,7 +64,13 @@ const login = async (req, res) => {
         throw new CustomError.UnauthenticatedError('Please verify your email');
     }
     const tokenUser = createTokenUser(user)
-    attachCookiesToResponse({res, user: tokenUser});
+     let refreshToken = '';
+    refreshToken = crypto.randomBytes(40).toString('hex');
+    const userAgent = req.headers['user-agent'];
+    const ip = req.ip;
+    const userToken = {refreshToken, ip, userAgent, user:user._id};
+    await TokenSchema.create(userToken);
+    attachCookiesToResponse({res, user: tokenUser, refreshToken});
 
     res.status(StatusCodes.OK).json({ user: tokenUser });
 };
