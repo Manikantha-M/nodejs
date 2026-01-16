@@ -1,6 +1,7 @@
 const validator = require('validator');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { string } = require('joi');
 
 const UserSchema = new mongoose.Schema({
     name:{
@@ -33,7 +34,13 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    verified: Date
+    verified: Date,
+    passwordToken:{
+        type: String
+    },
+    passwordTokenExpirationDate:{
+        type: Date
+    }
 });
 
 UserSchema.pre('save', async function(){
